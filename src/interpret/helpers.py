@@ -80,20 +80,20 @@ def make_NFA(states, input_symbols, transitions, initial_state, final_states):
     )
     
 def open(filename): 
-    if str(filename).lower().endswith() not in ['.png', '.jpg', '.jpeg', '.svg', '.pdf']:
+    if str(filename).lower().endswith(('.png', '.jpg', '.jpeg', '.svg', '.pdf')):
+        try:
+            if platform.system() == 'Darwin':       # macOS
+                subprocess.check_call(('open', filename), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            elif platform.system() == 'Windows':    # Windows
+                os.startfile(os.path.normpath(filename))
+            else:                                   # linux variants
+                subprocess.check_call(('xdg-open', filename), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT) 
+            return ("Opening " + str(filename) + "...")
+        except Exception as ex:
+            message = 'The file ' + os.path.normpath(filename) + ' does not exist.'
+            return message
+    else:
         return 'The file ' + os.path.normpath(filename) + ' is not an accepted file type to open.'
-    try:
-        if platform.system() == 'Darwin':       # macOS
-            subprocess.check_call(('open', filename), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        elif platform.system() == 'Windows':    # Windows
-            os.startfile(os.path.normpath(filename))
-        else:                                   # linux variants
-            subprocess.check_call(('xdg-open', filename), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT) 
-        return ("Opening " + str(filename) + "...")
-    except Exception as ex:
-        message = 'The file ' + os.path.normpath(filename) + ' does not exist.'
-        return message
-        
 def save(*args):
   target_fa = args[0]
   path = args[1]
