@@ -6,7 +6,7 @@ Integers in Automython act the same as `int`s in Python.
 
 ## String
 
-Strings in Automython act the same as `string`s in Python. You can use both `'` or `"` symbols to enclose them, just like Python.
+Strings in Automython act the same as `str`s in Python. You can use both `'` or `"` symbols to enclose them, just like Python.
 
 ## Boolean
 
