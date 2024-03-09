@@ -5,7 +5,7 @@
 
 [![build](https://github.com/mkantrr/automython/actions/workflows/build.yml/badge.svg)](https://github.com/mkantrr/automythonactions/workflows/build.yml)
 
-## `https://pypi.org/project/automython`
+## [`https://pypi.org/project/automython`](https://pypi.org/project/automython)
 
 The **Automython** interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory.
 
