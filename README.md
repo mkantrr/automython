@@ -38,26 +38,29 @@ To use this package once installed, you need to have a file with the extension `
 This `.theory` file has very simiilar syntax definitions to Python, however with some limitations as the scope is not quite that large.
 
 All types in the `.theory` file operate the same as Python. The "native" types (supported types that are converted to Python) for Automython are:
-  - [`Integer`](#Integer)
-  - [`String`](#String)
-  - [`Boolean`](#Boolean)
-  - [`Dictionary`](#Dictionary)
-  - [`Set`](#Set)
+
+- [`Integer`](#Integer)
+- [`String`](#String)
+- [`Boolean`](#Boolean)
+- [`Dictionary`](#Dictionary)
+- [`Set`](#Set)
 
 Computational theory objects that are supported are:
-  - [`DFA`](#DFA) (i.e. `DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool`)
-  - [`NFA`](#NFA) (i.e. `NFA(states, input_symbols, transitions, initial_state, final_states)`)
+
+- [`DFA`](#DFA) (i.e. `DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool`)
+- [`NFA`](#NFA) (i.e. `NFA(states, input_symbols, transitions, initial_state, final_states)`)
 The parameters within these calls can be substituted for any native types supported.
 
 [Variables](#Variable) exist. Variables are defined such that `x = {'s1', 's2'}` assigns that set to the `x` variable.
 
 Function calls exist too. Function calls return a value, usually only a string. You can assign a variable to these function_calls.
 The available functions to use are:
-  - [`save()`](./functions.md#`save(path[optional], input_string[optional], horizontal[optional])`)
-  - [`definition()`](#`definition()`)
-  - [`test()`](#`test(input_string)`)
-  - [`open()`](#`open(path[optional])`)
-  - [`print()`](#`print(args[optional])`)
+
+- [`save()`](<#`save(path[optional], input_string[optional], horizontal[optional])`>)
+- [`definition()`](#`definition()`)
+- [`test()`](#`test(input_string)`)
+- [`open()`](#`open(path[optional])`)
+- [`print()`](#`print(args[optional])`)
 
 Each function can be wrapped in `print()` to display the value returned from each function.
 
@@ -94,6 +97,7 @@ It must **also** be assigned to a variable; it cannot be treated as an expressio
 ```python
 dfa = DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool)
 ```
+
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.

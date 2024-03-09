@@ -40,25 +40,27 @@ To use this package once installed, you need to have a file with the extension `
 This `.theory` file has very simiilar syntax definitions to Python, however with some limitations as the scope is not quite that large.
 
 All types in the `.theory` file operate the same as Python. The "native" types (supported types that are converted to Python) for Automython are:
-  - [`Integer`](./types.md#Integer)
-  - [`String`](./types.md#String)
-  - [`Boolean`](./types.md#Boolean)
-  - [`Dictionary`](./types.md#Dictionary)
-  - [`Set`](./types.md#Set)
+
+- [`Integer`](./types.md#Integer)
+- [`String`](./types.md#String)
+- [`Boolean`](./types.md#Boolean)
+- [`Dictionary`](./types.md#Dictionary)
+- [`Set`](./types.md#Set)
 
 Computational theory objects that are supported are:
-  - [`DFA`](./types.md#DFA) (i.e. `DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool`)
-  - [`NFA`](./types.md#NFA) (i.e. `NFA(states, input_symbols, transitions, initial_state, final_states)`)
+- [`DFA`](./types.md#DFA) (i.e. `DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool`)
+- [`NFA`](./types.md#NFA) (i.e. `NFA(states, input_symbols, transitions, initial_state, final_states)`)
 The parameters within these calls can be substituted for any native types supported.
 
 [Variables](./types.md#Variable) exist. Variables are defined such that `x = {'s1', 's2'}` assigns that set to the `x` variable.
 
 Function calls exist too. Function calls return a value, usually only a string. You can assign a variable to these function_calls.
 The available functions to use are:
-  - [`save()`](./functions.md#`save(path[optional], input_string[optional], horizontal[optional])`)
-  - [`definition()`](./functions.md#`definition()`)
-  - [`test()`](./functions.md#`test(input_string)`)
-  - [`open()`](./functions.md#`open(path[optional])`)
-  - [`print()`](./functions.md#`print(args[optional])`)
+
+- [`save()`](<./functions.md#`save(path[optional], input_string[optional], horizontal[optional])`>)
+- [`definition()`](./functions.md#`definition()`)
+- [`test()`](./functions.md#`test(input_string)`)
+- [`open()`](./functions.md#`open(path[optional])`)
+- [`print()`](./functions.md#`print(args[optional])`)
 
 Each function can be wrapped in `print()` to display the value returned from each function.

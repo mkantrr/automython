@@ -31,6 +31,7 @@ It must **also** be assigned to a variable; it cannot be treated as an expressio
 ```python
 dfa = DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool)
 ```
+
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.
