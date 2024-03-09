@@ -1,0 +1,113 @@
+# https://github.com/caleb531/automata/blob/main/mkdocs.yml
+
+site_name: Automython
+site_description: The Automython interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory. 
+site_url: https://automython.site.to.be.created.org
+repo_url: https://github.com/mkantrr/automython
+repo_name: automython
+edit_uri: blob/main/docs/
+authors:
+  - mkantrr: https://matutu.dev/
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - toc.integrate
+    - navigation.top
+    - navigation.indexes
+    - navigation.tabs
+    - content.code.copy
+  # - navigation.tabs.sticky
+  # - navigation.tracking
+  # - navigation.expand
+  # - navigation.sections
+  # - header.autohide
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/img/logo.svg
+  favicon: assets/img/favicon.png
+  language: en
+plugins:
+  - search:
+      separator: '[\s\-\.]'
+      min_length: 2
+      indexing:
+        "full"
+        # media_type: print
+        # enabled_if_env: ENABLE_PDF_EXPORT
+  - macros:
+      enabled_if_env: ENABLE_PDF_EXPORT
+  - mkdocstrings:
+      enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+      custom_templates: templates
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
+            docstring_style: "numpy"
+            filters:
+            - "!^_"
+            - "!^__"
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      # auto_title: true
+      # anchor_linenums: true
+      # linenums: true
+      # linenums_style: pymdownx-inline
+  - pymdownx.tasklist:
+      clickable_checkbox: true
+      custom_checkbox: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - admonition
+  - pymdownx.details
+  - footnotes
+  - attr_list
+  - md_in_html
+  - tables
+extra:
+  social:
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/automython/
+      name: Package on PyPI
+copyright: Copyright &copy; 2024 Matthew Kanter
+nav:
+  - Introduction:
+      - index.md
+      - types.md
+      - functions.md
+  - Examples:
+      - examples/fa-examples.md
+  - About:
+      - people.md
