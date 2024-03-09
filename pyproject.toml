@@ -1,3 +1,23 @@
+[project]
+name = "automython"
+version = "1.0.0"
+description = "A simplistic programming language interpreter to Python to help students grasp finite automata theory programmatically and with a computed graph through visualization libraries."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ['automata', "finite", 'compiler', 'interpreter', 'theory', 'computational theory', "non-deterministic", "turing", "machine", "state"]
+license = {file = 'LICENSE.txt'}
+authors = [
+    {name = 'Matthew Kanter', email = 'matt@matutu.dev'}
+]
+maintainers = [
+    {name = 'Matthew Kanter', email = 'matt@matutu.dev'}
+]
+dependencies = [
+    "automata-lib[visual]>=8.2.0",
+    "pandas>=2.2.0",
+    "ipython>=8.22.2"
+]
+
 [build-system]
 requires = ['setuptools>=42']
 build-backend = 'setuptools.build_meta'
