@@ -1,6 +1,6 @@
 [project]
 name = "automython"
-version = "1.0.1"
+version = "1.0.2"
 description = "A simplistic programming language interpreter to Python to help students grasp finite automata theory programmatically and with a computed graph through visualization libraries."
 readme = "README.md"
 requires-python = ">=3.8"
