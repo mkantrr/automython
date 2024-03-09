@@ -5,8 +5,9 @@ site_description: The Automython interpreter is a simple programming language th
 site_url: https://automython.matutu.dev
 repo_url: https://github.com/mkantrr/automython
 repo_name: automython
-edit_uri: blob/master/docs/
-site_author: Matthew Kanter
+edit_uri: blob/main/docs/
+authors:
+  - mkantrr: https://matutu.dev/
 theme:
   name: material
   palette:
@@ -43,13 +44,13 @@ theme:
 plugins:
   - search:
       separator: '[\s\-\.]'
-      #min_length: 2
-      #indexing:
-      #  "full"
+      min_length: 2
+      indexing:
+        "full"
         # media_type: print
         # enabled_if_env: ENABLE_PDF_EXPORT
-  #- macros:
-  #    enabled_if_env: ENABLE_PDF_EXPORT
+  - macros:
+      enabled_if_env: ENABLE_PDF_EXPORT
   - mkdocstrings:
       enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
       custom_templates: templates
