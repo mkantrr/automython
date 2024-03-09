@@ -11,7 +11,7 @@ This project originially started out as my senior capstone project at umw i woul
 
 It slowly evolved as I worked closely with my fantastic professor, [**Dr. Andrew Marshall**](https://www.marshallandrew.net/) into creating an interpreter to Python to make use of pre-existing visualization libraries ([automata-lib](https://github.com/caleb531/automata), [visual-automata](https://github.com/lewiuberg/visual-automata)) and the small scope of the operations this language would have to perform. After all, what's the point of creating a whole new programming language that only performs one basic function when you could instead create a programming language that translates to a more widely used and broader use case programming language to make use of already written higher level logic? Point proven, nobody wants to write assembly. *shudders*
 
-Thank you to [**Leonardo Giordani**](https://www.thedigitalcatonline.com/pages/about.html) for his TDD work in a simple calculator interpreter in Python that was heavily adapted for this package.
+Thank you to [**Leonardo Giordani**](https://www.thedigitalcatonline.com/pages/about.html) for his TDD work on a simple calculator interpreter in Python that was heavily adapted for this package.
 
 This package requires Python 3.8 or newer.
 

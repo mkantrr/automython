@@ -23,7 +23,7 @@ def cli():
                 if (line in ['exit()', 'quit()']):
                     return
             except EOFError:
-                print()
+                print(end='')
                 break
             except KeyboardInterrupt:
                 print('\n'+'KeyboardInterrupt')
@@ -44,7 +44,6 @@ def cli():
                 if node:
                     visitor.visit(node.asdict())
             except Exception as ex:
-                print()
                 template = "An exception of type {0} occurred:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
                 print(message)
