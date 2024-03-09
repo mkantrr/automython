@@ -17,6 +17,8 @@ dependencies = [
     "pandas>=2.2.0",
     "ipython>=8.22.2"
 ]
+dynamic = ["entry-points", "classifiers"]
+
 
 [build-system]
 requires = ['setuptools>=42']
