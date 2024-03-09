@@ -66,29 +66,29 @@ The available functions to use are:
 
 Each function can be wrapped in `print()` to display the value returned from each function.
 
-#### Types
+### Types
 
-##### Integer
+#### Integer
 
 Integers in Automython act the same as `int`s in Python.
 
-##### String
+#### String
 
 Strings in Automython act the same as `string`s in Python. You can use both `'` or `"` symbols to enclose them, just like Python.
 
-##### Boolean
+#### Boolean
 
 Booleans in Automython act the same as `bool`s in Python.
 
-##### Dictionary
+#### Dictionary
 
 Dictioniaries in Automython act the same as `dict`s in Python. The only difference in the more limited support types for what you can assign to keys to only Automython's "native" types, and no other Python types that are not included.
 
-##### Set
+#### Set
 
 Sets in Automython act the same as `set`s in Python. The only difference in the more limited support types for what you can assign to keys to only Automython's "native" types, and no other Python types that are not included.
 
-##### DFA
+#### DFA
 **Deterministic Finite Automaton**:
 
 The DFA object in Automython must resemble this syntax:
@@ -107,7 +107,7 @@ dfa = DFA(states, input_symbols, transitions, initial_state, final_states, allow
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `allow_partial` argument is optional, and is a Boolean. The default value is `False` if it is not specified, but if it is specified, it allows the DFA to be validated as a partial DFA. 
 
-##### NFA
+#### NFA
 **Non-deterministic Finite Automaton**:
 
 The NFA object in Automython must resemble this syntax:
@@ -125,9 +125,9 @@ nfa = NFA(states, input_symbols, transitions, initial_state, final_states, allow
 - The `initial_state` argument is a String. This can be either a String in the argument, or a variable that stores a String.
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 
-#### Functions
+### Functions
 
-##### `save(path[optional], input_string[optional], horizontal[optional])`
+#### `save(path[optional], input_string[optional], horizontal[optional])`
 
 The `save()` function can only be used when calling it on an automata variable already assigned, i.e. `fa.save()`.
 
@@ -137,7 +137,7 @@ When executed, this function will, by default, save the automata object's graph 
 - If the `input_string` parameter is specified, which is a string containing the input symbols from the automata's object, the function will save the automata object's graph with a gradient of transitions taken through the input_string as a test string. The transitions gradient in the saved file will be green if the string is accepted, or red if the string is rejected. This is, in essence, the visual representation of [`test()`](#`test(input_string)`) 
 - If the `horizontal` parameter is specified, which is a boolean, the function will save the automata object's graph in horizontal dimensions if `True` or vertical dimensions if `False`.
 
-##### `definition()`
+#### `definition()`
 
 The `definition()` function can only be used when calling it on an automata variable already assigned, i.e. `fa.definition()`.
 
@@ -146,7 +146,7 @@ When executed, this function will return a string representation of the transiti
 - The → symbol denotes the initial state.
 - The * symbol denotes an accepting state.
 
-##### `test(input_string)`
+#### `test(input_string)`
 
 The `test()` function can only be used when calling it on an automata variable already assigned, i.e. `fa.test("1010")`.
 
@@ -156,14 +156,14 @@ When executed, this function will return a string representation of the transiti
 - The → symbol denotes the initial state.
 - The * symbol denotes an accepting state.
 
-##### `open(path[optional])`
+#### `open(path[optional])`
 
 When executed, this function will, by default, open a file called `M.png` in the same directory as when `automython` command that was run.
 
 - If the function is executed in the same way as `save()`, i.e. `fa.open()`, the default file it will open will be the variable it is called on (`fa.png`).
 - If the `path` parameter is specified, which is a string, the function will open the specified file in the OS native viewer. If the path is specified **and** the function is called on a variable, the variable it is called on is obsolete, and the path parameter takes precedence.
 
-##### `print(args[optional])`
+#### `print(args[optional])`
 
 The `print()` function is intended to be used as a standalone function, similar to how it is used in Python. If the function is called on a variable, the variable is obsolete. If the function is assigned to a variable, the variable will store `None`.
 
