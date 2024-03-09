@@ -34,7 +34,7 @@ dfa = DFA(states, input_symbols, transitions, initial_state, final_states, allow
 
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
-- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.
+- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary. The values of each key maps to an input symbol as a key to a String denoting the state.
 - The `initial_state` argument is a String. This can be either a String in the argument, or a variable that stores a String.
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `allow_partial` argument is optional, and is a Boolean. The default value is `False` if it is not specified, but if it is specified, it allows the DFA to be validated as a partial DFA. 
@@ -53,6 +53,6 @@ nfa = NFA(states, input_symbols, transitions, initial_state, final_states, allow
 
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
-- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.
+- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary. The values of each key maps to an input symbol as a key to a Set of states.
 - The `initial_state` argument is a String. This can be either a String in the argument, or a variable that stores a String.
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.

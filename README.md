@@ -5,6 +5,8 @@
 
 [![build](https://github.com/mkantrr/automython/actions/workflows/build.yml/badge.svg)](https://github.com/mkantrr/automythonactions/workflows/build.yml)
 
+## `https://pypi.org/project/automython`
+
 The **Automython** interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory.
 
 This project originially started out as my senior Capstone project at UMW I would complete to graduate with University Honors. It originally started out as a proposal to create a whole new programming language, writing a compiler that translates my designed syntax into machine code to run a finite automata (either a deterministic finite automata (DFA) or non-deterministic (NFA), or if time permitted since it was only a one semester project a Turing machine) and output to the user a graph visualization of the inputted 5-tuple automata, whether an optional input word was accepted or rejected by the automata, and a table of transition functions/steps.
@@ -110,7 +112,7 @@ dfa = DFA(states, input_symbols, transitions, initial_state, final_states, allow
 
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
-- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.
+- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary. The values of each key maps to an input symbol as a key to a String denoting the state.
 - The `initial_state` argument is a String. This can be either a String in the argument, or a variable that stores a String.
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `allow_partial` argument is optional, and is a Boolean. The default value is `False` if it is not specified, but if it is specified, it allows the DFA to be validated as a partial DFA. 
@@ -129,7 +131,7 @@ nfa = NFA(states, input_symbols, transitions, initial_state, final_states, allow
 
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 - The `input_symbols` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
-- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary.
+- The `transitions` argument is a Dictionary. This can be either a Dictionary in the argument, or a variable that stores a Dictionary. The values of each key maps to an input symbol as a key to a Set of states.
 - The `initial_state` argument is a String. This can be either a String in the argument, or a variable that stores a String.
 - The `final_states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
 
