@@ -32,7 +32,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'automython=interpreter:interpret'
+            'automython=automython.interpreter:interpret'
         ]
     }
 )
