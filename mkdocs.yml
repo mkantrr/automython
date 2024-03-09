@@ -5,7 +5,7 @@ site_description: The Automython interpreter is a simple programming language th
 site_url: https://automython.matutu.dev
 repo_url: https://github.com/mkantrr/automython
 repo_name: automython
-edit_uri: blob/main/docs/
+edit_uri: blob/master/docs/
 site_author: Matthew Kanter
 theme:
   name: material
