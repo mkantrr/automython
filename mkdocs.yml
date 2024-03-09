@@ -2,12 +2,11 @@
 
 site_name: Automython
 site_description: The Automython interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory. 
-site_url: https://automython.site.to.be.created.org
+site_url: https://automython.matutu.dev
 repo_url: https://github.com/mkantrr/automython
 repo_name: automython
 edit_uri: blob/main/docs/
-authors:
-  - mkantrr: https://matutu.dev/
+site_author: Matthew Kanter
 theme:
   name: material
   palette:
@@ -44,13 +43,13 @@ theme:
 plugins:
   - search:
       separator: '[\s\-\.]'
-      min_length: 2
-      indexing:
-        "full"
+      #min_length: 2
+      #indexing:
+      #  "full"
         # media_type: print
         # enabled_if_env: ENABLE_PDF_EXPORT
-  - macros:
-      enabled_if_env: ENABLE_PDF_EXPORT
+  #- macros:
+  #    enabled_if_env: ENABLE_PDF_EXPORT
   - mkdocstrings:
       enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
       custom_templates: templates
