@@ -1,6 +1,5 @@
 [project]
 name = "automython"
-version = "1.0.2"
 description = "A simplistic programming language interpreter to Python to help students grasp finite automata theory programmatically and with a computed graph through visualization libraries."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -17,7 +16,7 @@ dependencies = [
     "pandas>=2.2.0",
     "ipython>=8.22.2"
 ]
-dynamic = ["entry-points", "scripts", "classifiers"]
+dynamic = ["entry-points", "scripts", "classifiers", "version"]
 
 
 [build-system]

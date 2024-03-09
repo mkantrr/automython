@@ -9,7 +9,6 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name='automython',
-    version='1.0.2',
     description='A simplistic programming language interpreter to Python to help students grasp finite automata theory programmatically and with a computed graph through visualization libraries.',
     long_description=README,
     long_description_content_type='text/markdown',
@@ -32,7 +31,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'automython=automython.interpreter:interpret'
+            'automython=interpret.interpreter:interpret'
         ]
     }
 )
