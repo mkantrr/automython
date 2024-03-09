@@ -15,6 +15,14 @@ Thank you to [**Leonardo Giordani**](https://www.thedigitalcatonline.com/pages/a
 
 This package requires Python 3.8 or newer.
 
+## Prerequisites
+
+```sh
+pip install 'automata-lib[visual]'
+pip install pandas
+pip install ipython
+```
+
 ## Installing
 
 You can install the latest version of Automython via `pip`:
