@@ -3,6 +3,8 @@
 *Copyright 2024 Matthew Kanter*  
 *Released under the MIT license*
 
+[![build](https://github.com/mkantrr/automython/actions/workflows/build.yml/badge.svg)](https://github.com/mkantrr/automythonactions/workflows/build.yml)
+
 The **Automython** interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory.
 
 This project originially started out as my senior Capstone project at UMW I would complete to graduate with University Honors. It originally started out as a proposal to create a whole new programming language, writing a compiler that translates my designed syntax into machine code to run a finite automata (either a deterministic finite automata (DFA) or non-deterministic (NFA), or if time permitted since it was only a one semester project a Turing machine) and output to the user a graph visualization of the inputted 5-tuple automata, whether an optional input word was accepted or rejected by the automata, and a table of transition functions/steps.
