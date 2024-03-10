@@ -1,7 +1,5 @@
 import interpret.helpers as helpers
 
-from typing import Union
-
 class Visitor:
   def __init__(self):
       self.variables = {}
@@ -104,7 +102,7 @@ class Visitor:
             parameters.append(self.variables[node['variable']]['value'])
         if function_name in ['open', 'save']:
             if len(right_parameters_value) > 0:
-                if '.' in right_parameters_value[0]:
+                if str(right_parameters_value[0]).lower().endswith(('.png', '.jpg', '.jpeg', '.svg', '.pdf')):
                     default_file = right_parameters_value[0]
                     right_parameters_value.pop(0) 
             parameters.append(default_file)

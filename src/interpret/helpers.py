@@ -4,19 +4,32 @@ from automata.tm.dtm import DTM
 from automata.tm.ntm import NTM
 from automata.tm.mntm import MNTM
 
+import random
+import copy
+from forbiddenfruit import curse
 from typing import Union
 import pandas as pd
 import subprocess, os, platform
+
+def dict_deepcopy(self) -> dict:
+    return copy.deepcopy(dict(self))
+
+curse(dict, "deepcopy", dict_deepcopy)
+
 
 def system_type():
     return platform.system()
   
 def definition(*args):
     target_fa = args[0]
-    table = make_fa_table(target_fa)
+    if isinstance(target_fa, DFA):
+        table = make_dfa_table(target_fa)
+    elif isinstance(target_fa, NFA):
+        table = make_nfa_table(target_fa)
     return table
-  
-def make_fa_table(target_fa) -> pd.DataFrame:
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py
+def make_dfa_table(target_fa) -> pd.DataFrame:
     initial_state = target_fa.initial_state
     final_states = target_fa.final_states
 
@@ -59,6 +72,71 @@ def make_fa_table(target_fa) -> pd.DataFrame:
 
     df = pd.DataFrame.from_dict(table).fillna("∅").T
     return df.reindex(sorted(df.columns), axis=1)
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py
+def make_nfa_table(target_fa) -> pd.DataFrame:
+        """
+        Generates a transition table of the given VisualNFA.
+
+        Returns:
+            DataFrame: A transition table of the VisualNFA.
+        """
+
+        final_states = "".join(target_fa.final_states)
+
+        transitions = _nfa_add_lambda(all_transitions=target_fa.transitions)
+
+        table: dict = {}
+        for state, transition in sorted(transitions.items()):
+            if state == target_fa.initial_state and state in final_states:
+                state = "→*" + state
+            elif state == target_fa.initial_state:
+                state = "→" + state
+            elif state in final_states:
+                state = "*" + state
+            row: dict = {}
+            for input_symbol, next_states in transition.items():
+                # Prepare nice symbol
+                if input_symbol == "":
+                    input_symbol = "λ"
+                cell: list = []
+                for next_state in sorted(next_states):
+                    if next_state in final_states:
+                        cell.append("*" + next_state)
+                    else:
+                        cell.append(next_state)
+                if len(cell) == 1:
+                    cell = cell.pop()
+                else:
+                    cell = "{" + ",".join(cell) + "}"
+                row[input_symbol] = cell
+            table[state] = row
+
+        table = pd.DataFrame.from_dict(table).fillna("∅").T
+        table = table.reindex(sorted(table.columns), axis=1)
+        return table
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py
+def _nfa_add_lambda(all_transitions: dict) -> dict:
+        """
+        Replacing '' key name for empty string (lambda/epsilon) transitions.
+
+        Args:
+            all_transitions (dict): The NFA's transitions with '' for lambda transitions.
+            input_symbols (str): The NFA's input symbols/alphabet.
+
+        Returns:
+            dict: Transitions with λ for lambda transitions
+        """
+        all_transitions = all_transitions.deepcopy()
+        # Replacing '' key name for empty string (lambda/epsilon) transitions.
+        for transitions in all_transitions.values():
+            transitions = transitions.deepcopy()
+            for state, transition in list(transitions.items()):
+                if state == "":
+                    transitions["λ"] = transition
+                    del transitions[""]
+        return all_transitions
  
 def make_DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial=False): 
     return DFA(
@@ -115,6 +193,10 @@ def test(*args):
         taken_steps = \
             _make_dfa_transition_walkthrough(target_fa, input_string)
         return (taken_steps, 'ipython_display')
+    elif isinstance(target_fa, NFA):
+        taken_steps = \
+            _make_nfa_transition_walkthrough(target_fa, input_string)
+        return (taken_steps, 'ipython_display')
     #return_string = 'Steps taken:'
     #for i in transition_steps:
     #  return_string += "\n->" + " From " + str(i[0]) + " to " + str(i[1]) + " on " + str(i[2])
@@ -124,8 +206,7 @@ def test(*args):
     #else:
     #    return_string += '\nRejected word...'
     #    
-    #return return_string
-    
+    #return return_string 
 
 #https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/dfa.py
 def _make_dfa_transition_walkthrough(target_fa, input_str: str, return_result=False) -> Union[bool, list, list]:
@@ -217,11 +298,203 @@ def _get_dfa_transition_steps(target_fa, initial_state, final_states, input_str:
     ).rename_axis("Step:", axis=1)
     if status:
         transition_steps.columns = pd.MultiIndex.from_product(
-            [[f'[\"{input_str}\" is Accepted!]'], transition_steps.columns]
+            [[f'[DFA on \"{input_str}\" is Accepted!]'], transition_steps.columns]
         )
         return transition_steps
     else:
         transition_steps.columns = pd.MultiIndex.from_product(
-            [[f'[\"{input_str}\" is Rejected...]'], transition_steps.columns]
+            [[f'[DFA on \"{input_str}\" is Rejected...]'], transition_steps.columns]
         )
         return transition_steps
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py    
+def _make_nfa_transition_walkthrough(target_fa, input_str: str, return_result=False) -> Union[bool, list, pd.DataFrame]:  # pragma: no cover. Too many possibilities.
+        """
+        Checks if string of input symbols results in final state.
+
+        Args:
+            input_str (str): The input string to run on the NFA.
+            return_result (bool, optional): Returns results to the show_diagram method. Defaults to False.
+
+        Raises:
+            TypeError: To let the user know a string has to be entered.
+
+        Returns:
+            Union[bool, list, list]: If the last state is the final state, transition pairs, and steps taken.
+        """
+
+        if not isinstance(input_str, str):
+            raise TypeError(
+                f"input_str should be a string. "
+                f"{input_str} is {type(input_str)}, not a string."
+            )
+            
+        status = target_fa.accepts_input(input_str)
+            
+        status, taken_transitions_pairs = _nfa_pathfinder(
+            target_fa, input_str=input_str, status=status
+        )
+        if not isinstance(status, bool):
+            if return_result:
+                return status, [], pd.DataFrame, input_str
+            else:
+                return status
+        current_states = target_fa.initial_state
+        transitions_taken = [current_states]
+
+        for transition in range(len(taken_transitions_pairs)):
+            transitions_taken.append(taken_transitions_pairs[transition][1])
+
+        taken_steps, inputs = _get_nfa_transition_steps(
+            initial_state=target_fa.initial_state,
+            final_states=target_fa.final_states,
+            input_str=input_str,
+            transitions_taken=transitions_taken,
+            status=status,
+        )
+        if return_result:
+            return status, taken_transitions_pairs, taken_steps, inputs
+        else:
+            return taken_steps
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py    
+def _get_nfa_transition_steps(initial_state, final_states, input_str: str, transitions_taken: list, status: bool) -> pd.DataFrame:  # pragma: no cover. Too many possibilities.
+        """
+        Generates a table of taken transitions based on the input string and it's result.
+
+        Args:
+            initial_state (str): The NFA's initial state.
+            final_states (set): The NFA's final states.
+            input_str (str): The input string to run on the NFA.
+            transitions_taken (list): Transitions taken from the input string.
+            status (bool): The result of the input string.
+
+        Returns:
+            DataFrame: Table of taken transitions based on the input string and it's result.
+        """
+        current_states = transitions_taken.copy()
+        for i, state in enumerate(current_states):
+
+            if state == "" or state == {}:
+                current_states[i] = "∅"
+
+            elif state == initial_state and state in final_states:
+                current_states[i] = "→*" + state
+            elif state == initial_state:
+                current_states[i] = "→" + state
+            elif state in final_states:
+                current_states[i] = "*" + state
+
+        new_states = current_states.copy()
+        del current_states[-1]
+        del new_states[0]
+        inputs = [str(x) for x in input_str]
+        inputs = inputs[: len(current_states)]
+
+        transition_steps: dict = {
+            "Current state:": current_states,
+            "Input symbol:": inputs,
+            "New state:": new_states,
+        }
+
+        transition_steps = pd.DataFrame.from_dict(transition_steps)
+        transition_steps.index += 1
+        transition_steps = pd.DataFrame.from_dict(
+            transition_steps
+        ).rename_axis("Step:", axis=1)
+        if status:
+            transition_steps.columns = pd.MultiIndex.from_product(
+                [[f'[NFA on \"{input_str}\" is Accepted!]'], transition_steps.columns]
+            )
+            return transition_steps, inputs
+        else:
+            transition_steps.columns = pd.MultiIndex.from_product(
+                [[f'[NFA on \"{input_str}\" is Rejected...]'], transition_steps.columns]
+            )
+            return transition_steps, inputs
+        
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py        
+def _nfa_pathfinder(target_fa, input_str: str, status: bool = False, counter: int = 0, main_counter: int = 0) -> Union[bool, list]:  # pragma: no cover. Too many possibilities.
+        """
+        Searches for a appropriate path to return to input_check.
+
+        Args:
+            input_str (str): Input symbols
+            status (bool, optional): If a path is found. Defaults to False.
+            counter (int, optional): To keep track of recursion limit in __pathsearcher. Defaults to 0.
+            main_counter (int, optional): To keep track of recursion limit in _pathfinder. Defaults to 0.
+
+        Returns:
+            Union[bool, list]: If a path is found, and a list of transition tuples.
+        """
+
+        counter += 1
+        nfa = target_fa.copy()
+        recursion_limit = 50
+        result = _nfa_pathsearcher(nfa, input_str, status)
+
+        if result:
+            return status, result
+        else:
+            main_counter += 1
+            if main_counter <= recursion_limit:
+                return _nfa_pathfinder(
+                    input_str, status, counter, main_counter=main_counter
+                )
+            else:
+                status = (
+                    "[NO VALID PATH FOUND]\n"
+                    "Try to eliminate lambda transitions and try again.\n"
+                    "Example: nfa_lambda_removed = nfa.eliminate_lambda()"
+                )
+                return status, []
+
+#https://github.com/lewiuberg/visual-automata/blob/master/visual_automata/fa/nfa.py
+def _nfa_pathsearcher(nfa, input_str: str, status: bool = False, counter: int = 0) -> list:  # pragma: no cover. Too many possibilities.
+        """
+        Searches for a appropriate path to return to _pathfinder.
+
+        Args:
+            nfa (VisualNFA): A VisualNFA object.
+            input_str (str): Input symbols.
+            status (bool, optional): If a path is found. Defaults to False.
+            counter (int, optional): To keep track of recursion limit. Defaults to 0.
+
+        Returns:
+            list: a list of transition tuples.
+        """
+
+        recursion_limit = 20000
+        counter += 1
+        current_state = {(nfa.initial_state)}
+        path = []
+        for symbol in input_str:
+            next_curr = nfa._get_next_current_states(current_state, symbol)
+            if next_curr == set():
+                if not status:
+                    state = {}
+                    path.append(("".join(current_state), state, symbol))
+                    return path
+                else:
+                    break
+            else:
+                state = random.choice(list(next_curr))
+            path.append(("".join(current_state), state, symbol))
+            current_state = {(state)}
+
+        # Accepted path opptained.
+        if (
+            status
+            and len(input_str) == (len(path))
+            and path[-1][1] in nfa.final_states
+        ):
+            return path
+        # Rejected path opptained.
+        elif not status and len(input_str) == (len(path)):
+            return path
+        # No path obtained. Try again.
+        else:
+            if counter <= recursion_limit:
+                return _nfa_pathsearcher(nfa, input_str, status, counter)
+            else:
+                return False

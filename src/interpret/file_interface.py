@@ -67,5 +67,8 @@ if __name__ == '__main__':
   if len(sys.argv) == 2 and sys.argv[1].lower().endswith('.theory'):
     interpret(sys.argv[1])
   else:
-    print('No file provided. Please pass in a .theory file, e.g.')
+    print('No file provided. Used automython/test.theory as default.')
+    print('If you would like to pass in your own .theory file, the syntax is:')
     print('python3 <path-to-file_interface.py> <file-name>.theory')
+    print()
+    interpret("automython/test.theory")

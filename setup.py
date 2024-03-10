@@ -28,7 +28,8 @@ setup(
     install_requires=[
         "automata-lib[visual]",
         "pandas",
-        "ipython"
+        "ipython",
+        "forbiddenfruit"
     ],
     entry_points={
         'console_scripts': [

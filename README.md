@@ -23,6 +23,7 @@ This package requires Python 3.8 or newer.
 pip install 'automata-lib[visual]'
 pip install pandas
 pip install ipython
+pip install forbiddenfruit
 ```
 
 ## Installing
