@@ -39,7 +39,6 @@ print(set)
 print()
 
 print({"s1", "s2", "s3"})
-print()
 ```
 
 ## Testing functions

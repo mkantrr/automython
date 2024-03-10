@@ -44,7 +44,6 @@ Automython can be used similarly to how `python` can be on the command line. Sim
 ```sh
 automython
 ```
-Refer to the next section for specifics on syntax.
 
 ### File Syntax
 To use this package once installed, you need to have a file with the extension `.theory` to run it on.
