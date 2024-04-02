@@ -205,7 +205,11 @@ class Parser:
         t = self.lexer.get_token()
         
         if t.type != fa_lex.PRINT:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
        
         return_node = None 
         with self.lexer:
@@ -239,8 +243,8 @@ class Parser:
             return_node = node
             
         if not return_node:
-            exception = fa_lex.TokenError(
-                'SyntaxError: Unclosed \'()\' at line {}'.format(
+            exception = fa_lex.SyntaxError(
+                'Incorrect syntax for print() call at line {}'.format(
                     self.lexer.line
                 )
             )
@@ -251,7 +255,11 @@ class Parser:
         t = self.lexer.get_token()
         
         if t.type != fa_lex.STRING:
-            raise fa_lex.TokenError 
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
         
         return StringNode(t.value[1:len(t.value)-1])
     
@@ -259,7 +267,11 @@ class Parser:
         t = self.lexer.get_token()
         
         if t.type != fa_lex.INTEGER:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
 
         if t.type == fa_lex.INTEGER:
             return IntegerNode(int(t.value))
@@ -268,7 +280,11 @@ class Parser:
         t = self.lexer.get_token()
         
         if t.type != fa_lex.BOOLEAN:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
 
         if t.type == fa_lex.BOOLEAN:
             return BooleanNode(t.value)
@@ -277,7 +293,11 @@ class Parser:
         t = self.lexer.get_token()
 
         if t.type != fa_lex.VAR:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
 
         return VariableNode(t.value)
     
@@ -295,6 +315,13 @@ class Parser:
             value = self.parse_collection()
         else:
             value = self.parse_expression()
+            
+        if not value or t == token.Token(fa_lex.EOL) or t == token.Token(fa_lex.EOF):
+            raise fa_lex.SyntaxError(
+                'Assignment has undefined value at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
            
         return AssignmentNode(variable, value)
     
@@ -302,14 +329,22 @@ class Parser:
         t = self.lexer.get_token()
         
         if t.type != fa_lex.FUNCTION_CALL:
-            raise fa_lex.TokenError
+           raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
         
         return StringNode(t.value)
     
     def _parse_func_parameters(self):
         t = self.lexer.peek_token() 
         if t.type != fa_lex.LITERAL and t.value != '(':
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
         
         with self.lexer:
             self._parse_literal(['('])
@@ -336,6 +371,12 @@ class Parser:
                     self._parse_literal(['('])
                     self._parse_literal([')']) 
                     return FunctionCallNode(variable, function_name, ParametersNode([]))
+        else:
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
                 
     def parse_standalone_func(self):
         t = self.lexer.peek_token()
@@ -352,16 +393,28 @@ class Parser:
                     self._parse_literal([')']) 
                     return FunctionCallNode(StringNode("M"), function_name, ParametersNode([]))
         else:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
     
     def _parse_literal(self, values=None):
         t = self.lexer.get_token()
 
         if t.type != fa_lex.LITERAL:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
 
         if values and t.value not in values:
-            raise fa_lex.TokenError
+            raise fa_lex.TokenError(
+                'line {}, internal parsing failed, literal value not in parsable array'.format(
+                    self.lexer.line
+                )
+            )
 
         return LiteralNode(t.value)
     
@@ -392,7 +445,16 @@ class Parser:
             right = self.parse_expression()
 
             left = BinaryNode(left, operator, right)
-            
+        
+        if isinstance(left, fa_lex.TokenError) \
+            or isinstance(left, fa_lex.SyntaxError):
+                t = self.lexer.get_token()
+                raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
+                
         return left 
     
     def parse_dictionary(self):
@@ -435,7 +497,11 @@ class Parser:
                 self._parse_literal(['}'])
                 return CollectionNode(collection)
         else:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\' at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
        
     def parse_parameters(self, parameters=None):
         t = self.lexer.peek_token()
@@ -458,7 +524,11 @@ class Parser:
         t = self.lexer.get_token() 
         
         if t.type not in [fa_lex.DFA, fa_lex.NFA]:
-            raise fa_lex.TokenError
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\', not a supported Automython FA at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
         
         if t.type == fa_lex.DFA:
             with self.lexer:
@@ -489,14 +559,24 @@ class Parser:
         with self.lexer:
             node = self.parse_assignment()
             
+        if isinstance(node, fa_lex.TokenError) \
+            or isinstance(node, fa_lex.SyntaxError):
+            raise node
+            
         with self.lexer:
             node = self.parse_function()
             
-        if isinstance(node, fa_lex.TokenError):
+        with self.lexer:
+            node = self.parse_expression()
+            
+        if isinstance(node, fa_lex.TokenError) \
+            or isinstance(node, fa_lex.SyntaxError):
             raise node
         elif node:
             return node
         else:
-            with self.lexer:
-                node = self.parse_expression()
-            return node
+            raise fa_lex.UnknownError(
+                'line {}, the parsed node returned None'.format(
+                    self.lexer.line
+                )
+            )

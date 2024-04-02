@@ -57,7 +57,7 @@ def interpret(filename):
   except Exception as ex:
     print()
     template = "An exception of type {0} occurred:\n{1!r}"
-    message = template.format(type(ex).__name__, ex.args)
+    message = template.format(type(ex).__name__, ex.args[0])
     print(message)
     
   if error_flag:

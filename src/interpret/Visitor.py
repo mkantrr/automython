@@ -10,6 +10,21 @@ class Visitor:
       self.NTMs = {}
       self.MNTMs = {}
       
+  def visit(self, node):
+      self.visit_helper(node) 
+      
+      for key, value in self.variables.items():
+        if value == None:
+            self.variables.pop(key)
+        
+      for key, value in self.DFAs.items():
+        if value == None:
+            self.DFAs.pop(key)
+            
+      for key, value in self.NFAs.items():
+        if value == None:
+            self.NFAs.pop(key)
+ 
   def isvariable(self, name):
       return name in self.variables
 
@@ -23,7 +38,7 @@ class Visitor:
           raise KeyError('SyntaxError: ' + name)
       return self.variables[name]['type']
   
-  def visit(self, node):
+  def visit_helper(self, node):
     if node['type'] == 'integer':
         return node['value'], node['type']
     if node['type'] == 'boolean':
@@ -36,8 +51,8 @@ class Visitor:
 
        
     if node['type'] == 'binary':
-        lvalue, ltype = self.visit(node['left'])
-        rvalue, rtype = self.visit(node['right'])
+        lvalue, ltype = self.visit_helper(node['left'])
+        rvalue, rtype = self.visit_helper(node['right'])
 
         operator = node['operator']['value']
 
@@ -53,34 +68,34 @@ class Visitor:
             collection = dict()
             for element in node['value']:
                 if element['type'] == 'variable':
-                    right_value, right_type = self.visit(element)
+                    right_value, right_type = self.visit_helper(element)
                     for key in right_value:
                          collection[key] = right_value[key]
                 else:
-                    right_key, right_value, right_type = self.visit(element)
+                    right_key, right_value, right_type = self.visit_helper(element)
                     collection[right_key] = right_value
             return collection, 'dictionary'
         else:
             collection = set()
             for element in node['value']:
-                right_value, right_type = self.visit(element)
+                right_value, right_type = self.visit_helper(element)
                 collection.add(right_value)
             return collection, node['type']
     
     if node['type'] == 'parameters':
         collection = list()
         for element in node['value']:
-            right_value, right_type = self.visit(element)
+            right_value, right_type = self.visit_helper(element)
             collection.append(right_value)
         return collection, node['type']
   
     if node['type'] == 'dictionary':
-        key_value, key_type = self.visit(node['key'])
-        value_value, value_type = self.visit(node['value'])
+        key_value, key_type = self.visit_helper(node['key'])
+        value_value, value_type = self.visit_helper(node['value'])
         return key_value, value_value, node['type']
     
     if node['type'] == 'print_func':
-        right_value, right_type = self.visit(node['value'])
+        right_value, right_type = self.visit_helper(node['value'])
         if type(right_value) == list and len(right_value) == 0:
             right_value = '' 
         self.printables.append(
@@ -93,7 +108,7 @@ class Visitor:
         return None, None
     
     if node['type'] == 'function_call':
-        right_parameters_value, right_parameters_type = self.visit(node['parameters'])
+        right_parameters_value, right_parameters_type = self.visit_helper(node['parameters'])
         function_name = node['function_name'].asdict()['value']
         default_file = node['variable'] + ".png"
         
@@ -115,7 +130,7 @@ class Visitor:
     if node['type'] == 'dfa':
         parameters = list()
         for element in node['value']:
-            right_value, right_type = self.visit(element)
+            right_value, right_type = self.visit_helper(element)
             parameters.append(right_value)
            
         try: 
@@ -136,9 +151,14 @@ class Visitor:
                                 parameters[3],
                                 parameters[4],
                             )
-        except Exception as e:
-            print()
-            print(str(e))
+        except Exception as ex:
+            if isinstance(ex, IndexError):
+                template = "Invalid parameter size for FA\n"
+                print(template)
+            else:
+                template = "An exception of type {0} occurred:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args[0])
+                print(message)
             return None, None
         
         return parameters, node['type']
@@ -146,7 +166,7 @@ class Visitor:
     if node['type'] == 'nfa':
         parameters = list()
         for element in node['value']:
-            right_value, right_type = self.visit(element)
+            right_value, right_type = self.visit_helper(element)
             parameters.append(right_value)
            
         try: 
@@ -165,20 +185,21 @@ class Visitor:
         return parameters, node['type']
         
     if node['type'] == 'assignment':
-        right_value, right_type = self.visit(node['value'])
-        if right_type == 'dfa':
-            self.DFAs[node['variable']] = {
+        right_value, right_type = self.visit_helper(node['value'])
+        if right_value != None and right_type != None:
+            if right_type == 'dfa':
+                self.DFAs[node['variable']] = {
+                    'value': right_value,
+                    'type': right_type
+                }
+            if right_type == 'nfa':
+                self.NFAs[node['variable']] = {
+                    'value': right_value,
+                    'type': right_type
+                } 
+            self.variables[node['variable']] = {
                 'value': right_value,
                 'type': right_type
             }
-        if right_type == 'nfa':
-            self.NFAs[node['variable']] = {
-                'value': right_value,
-                'type': right_type
-            } 
-        self.variables[node['variable']] = {
-            'value': right_value,
-            'type': right_type
-        }
 
         return None, None

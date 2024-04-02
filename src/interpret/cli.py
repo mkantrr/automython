@@ -23,7 +23,7 @@ def cli():
                 if (line in ['exit()', 'quit()']):
                     return
             except EOFError:
-                print(end='')
+                print()
                 break
             except KeyboardInterrupt:
                 print('\n'+'KeyboardInterrupt')
@@ -45,9 +45,10 @@ def cli():
                     visitor.visit(node.asdict())
             except Exception as ex:
                 template = "An exception of type {0} occurred:\n{1!r}"
-                message = template.format(type(ex).__name__, ex.args)
+                message = template.format(type(ex).__name__, ex.args[0])
                 print(message)
                 break
+            
             t = parser.lexer.peek_token()
             if (t.type == fa_lex.EOL):
                 t = parser.lexer.get_token()

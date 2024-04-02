@@ -20,7 +20,18 @@ class TokenError(ValueError):
     def __init__(self, msg=""):
         self.msg = msg
         super().__init__(self.msg)
-    
+
+class SyntaxError(SyntaxError):
+    """ The expected token is not the received token and the parsing cannot continue """
+    def __init__(self, msg=""):
+        self.msg = msg
+        super().__init__(self.msg)
+        
+class UnknownError(SyntaxError):
+    """ When all code has run and something has not worked correctly. Mainly used for debugging """
+    def __init__(self, msg=""):
+        self.msg = msg
+        super().__init__(self.msg)
 class Lexer:
     def __init__(self, text=''):
         self._text_storage = buffer.Buffer(text)
@@ -34,7 +45,7 @@ class Lexer:
         if etype:
             self.pop()
 
-        if etype in [TokenError]:
+        if etype in [TokenError, SyntaxError]:
             return True
 
     def load(self, text):
@@ -124,11 +135,11 @@ class Lexer:
      
     @property
     def line(self):
-        return self._text_storage.line 
+        return self._text_storage.line + 1
     
     @property
     def column(self):
-        return self._text_storage.column
+        return self._text_storage.column + 1
     
     @property
     def _current_char(self):

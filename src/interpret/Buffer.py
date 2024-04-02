@@ -26,7 +26,7 @@ class Buffer:
             return self.lines[self.line]
         except IndexError:
             raise EOFError(
-                "EOF reading line {}".format(self.line)
+                "EOF reading line {}".format(self.line + 1)
             )
 
     @property
@@ -36,7 +36,7 @@ class Buffer:
         except IndexError:
             raise EOLError(
                 "EOL reading column {} at line {}".format(
-                    self.column, self.line
+                    self.column + 1, self.line + 1
                 )
             )
             
@@ -47,7 +47,7 @@ class Buffer:
         except IndexError:
             raise EOLError(
                 "EOL reading column {} at line {}".format(
-                    self.column, self.line
+                    self.column + 1, self.line + 1
                 )
             )
 

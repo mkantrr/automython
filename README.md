@@ -126,7 +126,7 @@ NFA(states, input_symbols, transitions, initial_state, final_states)
 ```
 It must **also** be assigned to a variable; it cannot be treated as an expression, i.e.:
 ```python
-nfa = NFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool)
+nfa = NFA(states, input_symbols, transitions, initial_state, final_states)
 ```
 
 - The `states` argument is a Set. This can be either a Set in the argument, or a variable that stores a Set.
