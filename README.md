@@ -1,4 +1,4 @@
-# Automython
+# Automython (v1.2.0)
 
 *Copyright 2024 Matthew Kanter*  
 *Released under the MIT license*
