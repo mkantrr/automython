@@ -39,6 +39,13 @@ print(set)
 print()
 
 print({"s1", "s2", "s3"})
+print()
+
+tuple = ("s1", "s2", "s3")
+print(tuple)
+print()
+
+print(("s1", "s2", "s3"))
 ```
 
 ## Testing functions
