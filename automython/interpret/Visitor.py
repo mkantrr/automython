@@ -1,4 +1,5 @@
 import interpret.helpers as helpers
+import pandas as pd
 
 class Visitor:
   def __init__(self):
@@ -81,6 +82,14 @@ class Visitor:
                 right_value, right_type = self.visit_helper(element)
                 collection.add(right_value)
             return collection, node['type']
+        
+    if node['type'] == 'tuple':
+        collection = list()
+        for element in node['value']:
+           right_value, right_type = self.visit_helper(element) 
+           collection.append(right_value)
+        collection = tuple(collection)
+        return collection, node['type']
     
     if node['type'] == 'parameters':
         collection = list()
@@ -183,23 +192,52 @@ class Visitor:
             return None, None
         
         return parameters, node['type']
+    
+    if node['type'] == 'dtm':
+        parameters = list()
+        for element in node['value']:
+            right_value, right_type = self.visit_helper(element)
+            parameters.append(right_value)
+           
+        try: 
+            parameters = helpers.make_DTM(
+                parameters[0],
+                parameters[1],
+                parameters[2],
+                parameters[3],
+                parameters[4],
+                parameters[5],
+                parameters[6]
+            )
+        except Exception as e:
+            print()
+            print(str(e))
+            return None, None
+        
+        return parameters, node['type']
         
     if node['type'] == 'assignment':
         right_value, right_type = self.visit_helper(node['value'])
-        if right_value != None and right_type != None:
-            if right_type == 'dfa':
-                self.DFAs[node['variable']] = {
-                    'value': right_value,
-                    'type': right_type
-                }
-            if right_type == 'nfa':
-                self.NFAs[node['variable']] = {
-                    'value': right_value,
-                    'type': right_type
-                } 
-            self.variables[node['variable']] = {
-                'value': right_value,
-                'type': right_type
-            }
+        if type(right_value) != pd.DataFrame:
+            if right_value != None and right_type != None:
+                if right_type == 'dfa':
+                    self.DFAs[node['variable']] = {
+                        'value': right_value,
+                        'type': right_type
+                    }
+                if right_type == 'nfa':
+                    self.NFAs[node['variable']] = {
+                        'value': right_value,
+                        'type': right_type
+                    } 
+                if right_type == 'dtm':
+                    self.DTMs[node['variable']] = {
+                        'value': right_value,
+                        'type': right_type
+                    }
+        self.variables[node['variable']] = {
+            'value': right_value,
+            'type': right_type
+        }
 
         return None, None

@@ -117,10 +117,8 @@ class DictionaryNode(ValueNode):
     node_type = 'dictionary'
     
     def __init__(self, dict):
-        self.elements = dict
-        for key, value in self.elements.items():
-            self.key = key
-            self.value = value
+        self.key = dict[0]
+        self.value = dict[1]
     def asdict(self):
         return {
             'type': self.node_type,
@@ -141,6 +139,21 @@ class CollectionNode(ValueNode):
         return {
             'type': self.node_type,
             'value': self.elements
+        }
+        
+class TupleNode(ValueNode):
+    node_type = 'tuple'
+    
+    def __init__(self, list):
+        self.value = list
+        self.elements = []
+        for element in self.value:
+            self.elements.append(element.asdict())
+        
+    def asdict(self):
+        return {
+            'type': self.node_type,
+            'value': tuple(self.elements)
         }
 
 class ParametersNode(ValueNode):
@@ -175,6 +188,21 @@ class DFANode(ValueNode):
         
 class NFANode(ValueNode):
     node_type = 'nfa'
+    
+    def __init__(self, list):
+        self.value = list
+        self.elements = []
+        for element in self.value:
+            self.elements.append(element.asdict())
+        
+    def asdict(self):
+        return {
+            'type': self.node_type,
+            'value': self.elements
+        }
+        
+class DTMNode(ValueNode):
+    node_type = 'dtm'
     
     def __init__(self, list):
         self.value = list
@@ -311,7 +339,9 @@ class Parser:
             value = self.parse_function()
         elif t.type == fa_lex.DFA or t.type == fa_lex.NFA:
             value = self.parse_fa()
-        elif t.type == fa_lex.LITERAL and t.value == '{':
+        elif t.type == fa_lex.DTM:
+            value = self.parse_tm()
+        elif t.type == fa_lex.LITERAL and (t.value == '{' or t.value == '('):
             value = self.parse_collection()
         else:
             value = self.parse_expression()
@@ -457,18 +487,37 @@ class Parser:
                 
         return left 
     
+    def parse_tuple(self, collection=None):
+        with self.lexer:
+            self._parse_literal(['('])
+            left = self.parse_expression()
+            if collection == None:
+                collection = []
+            collection.append(left)
+            self._parse_literal([','])
+            self._allow_whitespace()
+            collection = self.parse_tuple(collection)
+            self._parse_literal([')'])
+            return collection
+        
+        left = self.parse_expression() 
+        return left
+    
     def parse_dictionary(self):
-        key = self.parse_expression()
+        key = self.parse_tuple()
         
         with self.lexer:
             self.lexer.discard(token.Token(fa_lex.LITERAL, ':'))
             t = self._allow_whitespace() 
-            if t.type == fa_lex.LITERAL and t.value == '{':
+            if t.type == fa_lex.LITERAL and (t.value == '{' or t.value == '('):
                 value = self.parse_collection()
             else:
                 value = self.parse_expression() 
                 
-            key = DictionaryNode({key: value})
+            if type(key) == list:
+                key = DictionaryNode((TupleNode(key), value)) 
+            else:
+                key = DictionaryNode((key, value))
             
         return key
          
@@ -496,6 +545,14 @@ class Parser:
                 self._allow_whitespace()
                 self._parse_literal(['}'])
                 return CollectionNode(collection)
+        elif t.type == fa_lex.LITERAL and t.value == '(':
+            with self.lexer:
+                self._parse_literal(['('])
+                self._allow_whitespace()
+                collection = self.parse_elements()
+                self._allow_whitespace()
+                self._parse_literal([')'])
+                return TupleNode(collection)
         else:
             raise fa_lex.SyntaxError(
                 'Unexpected value \'{}\' at line {}'.format(
@@ -505,7 +562,7 @@ class Parser:
        
     def parse_parameters(self, parameters=None):
         t = self.lexer.peek_token()
-        if t.type == fa_lex.LITERAL and t.value == '{':
+        if t.type == fa_lex.LITERAL and (t.value == '{' or t.value == '('):
             left = self.parse_collection()
         else:
             left = self.parse_expression()
@@ -546,6 +603,25 @@ class Parser:
                 self._allow_whitespace()
                 self._parse_literal([')'])
                 return NFANode(parameters) 
+            
+    def parse_tm(self):
+        t = self.lexer.get_token() 
+        
+        if t.type not in [fa_lex.DTM]:
+            raise fa_lex.SyntaxError(
+                'Unexpected value \'{}\', not a supported Automython TM at line {}'.format(
+                    t.value, self.lexer.line
+                )
+            )
+        
+        if t.type == fa_lex.DTM:
+            with self.lexer:
+                self._parse_literal(['('])
+                self._allow_whitespace()
+                parameters = self.parse_parameters()
+                self._allow_whitespace()
+                self._parse_literal([')'])
+                return DTMNode(parameters) 
             
     def parse_line(self):
         node = None

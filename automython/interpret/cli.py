@@ -62,6 +62,8 @@ def cli():
             if type(i['print_func']['value']) == tuple:
                 if i['print_func']['value'][1] == 'ipython_display':
                     display(i['print_func']['value'][0])
+                else:
+                    print(i['print_func']['value'])
             else:
                 print(i['print_func']['value'])
         visitor.printables = []

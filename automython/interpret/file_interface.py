@@ -45,6 +45,8 @@ def interpret(filename):
       if type(i['print_func']['value']) == tuple:
         if i['print_func']['value'][1] == 'ipython_display':
           display(i['print_func']['value'][0])
+        else:
+          print(i['print_func']['value'])
       else:
         print(i['print_func']['value'])
     visitor.printables = []
@@ -55,7 +57,7 @@ def interpret(filename):
     sys.exit(0)
   
   except Exception as ex:
-    print()
+    raise ex
     template = "An exception of type {0} occurred:\n{1!r}"
     message = template.format(type(ex).__name__, ex.args[0])
     print(message)

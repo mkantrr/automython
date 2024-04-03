@@ -13,6 +13,7 @@ BOOLEAN = 'BOOLEAN'
 PRINT = 'PRINT'
 DFA = 'DFA'
 NFA = 'NFA'
+DTM = 'DTM'
 FUNCTION_CALL = 'FUNCTION_CALL'
 
 class TokenError(ValueError):
@@ -73,6 +74,10 @@ class Lexer:
         nfa = self._process_nfa()
         if nfa:
             return nfa
+        
+        dtm = self._process_dtm()
+        if dtm:
+            return dtm
         
         func_name = self._process_func_name()
         if func_name:
@@ -233,6 +238,22 @@ class Lexer:
 
         return self._set_current_token_and_skip(
             token.Token(NFA, token_string)
+        )
+        
+    def _process_dtm(self):
+        regexp = re.compile(r"\b(DTM\()")
+        
+        match = regexp.match(
+            self._text_storage.tail
+        )
+
+        if not match:
+            return None
+
+        token_string = match.group()[:-1]
+
+        return self._set_current_token_and_skip(
+            token.Token(DTM, token_string)
         )
         
     def _process_func_name(self):

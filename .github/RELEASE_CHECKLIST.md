@@ -11,7 +11,7 @@ properly publish a release to GitHub and PyPI.
   - [ ] Check copyright year (the end year in the range should always be the
     current year)
 - [ ] Release
-  - [ ] Change version to new version in `src/interpret/cli.py`
+  - [ ] Change version to new version in `automython/interpret/cli.py`
   - [ ] Commit version bump with `$ bumpversion --current-version <new_version> <major/minor/patch>`
     - [ ] Commit message must be `Bump v<old_version> → <new_version>` (e.g. `Bump v1.0.0 → 1.0.1`)
   - [ ] Tag commit with new release number

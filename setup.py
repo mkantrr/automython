@@ -23,8 +23,8 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent"
     ],
-    package_dir={'':'src'},
-    packages=find_packages('src'),
+    package_dir={'':'automython'},
+    packages=find_packages('automython'),
     install_requires=[
         "automata-lib[visual]",
         "pandas",

@@ -33,6 +33,13 @@ print()
 print({"s1", "s2", "s3"})
 print()
 
+tuple = ("s1", "s2", "s3")
+print(tuple)
+print()
+
+print(("s1", "s2", "s3"))
+print()
+
 dfa = DFA(
     {"s0", "s1", "s2", "s3", "s4"}, 
     {"0", "1"}, 
@@ -60,15 +67,42 @@ nfa = NFA(
 print(nfa)
 print()
 
+dtm = DTM(
+    {'q0', 'q1', 'q2', 'q3', 'q4'},
+    {'0', '1'},
+    {'0', '1', 'x', 'y', '#'},
+    {
+        'q0': {
+            '0': ('q1', 'x', 'R'),
+            'y': ('q3', 'y', 'R')
+        },
+        'q1': {
+            '0': ('q1', '0', 'R'),
+            '1': ('q2', 'y', 'L'),
+            'y': ('q1', 'y', 'R')
+        },
+        'q2': {
+            '0': ('q2', '0', 'L'),
+            'x': ('q0', 'x', 'R'),
+            'y': ('q2', 'y', 'L')
+        },
+        'q3': {
+            'y': ('q3', 'y', 'R'),
+            '#': ('q4', '#', 'R')
+        }
+    },
+    'q0',
+    '#',
+    {'q4'}
+)
+
+print(dtm)
+print()
+
 dfa.save("1011")
 nfa.save("11")
-
-print(dfa.test("1011"))
-print(nfa.test("11"))
-
-nfa_def = nfa.definition()
-print(nfa_def)
-print()
+dtm.save()
+dtm.save("dtm_wordcheck.png", "0011")
 
 dfa.save('dfa.png')
 dfa.save('dfa_wordcheck.png', '1011')
@@ -86,5 +120,14 @@ print()
 
 print(dfa.test('1011'))
 print()
+
+print(nfa.test("11"))
+
+nfa_def = nfa.definition()
+print(nfa_def)
+print()
+
+print(dtm.definition())
+print(dtm.test("011"))
 
 print(open("dfa.png"))
