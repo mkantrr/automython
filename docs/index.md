@@ -19,6 +19,8 @@ This package requires Python 3.8 or newer.
 
 ## Prerequisites
 
+You must have [**GraphViz**](https://graphviz.org/download/)'s packages installed on your device.
+
 ```sh
 pip install 'automata-lib[visual]'
 pip install pandas
@@ -56,6 +58,7 @@ All types in the `.theory` file operate the same as Python. The "native" types (
 - [`Boolean`](./types.md#Boolean)
 - [`Dictionary`](./types.md#Dictionary)
 - [`Set`](./types.md#Set)
+- [`Tuple`](./types.md#Tuple)
 
 Computational theory objects that are supported are:
 - [`DFA`](./types.md#DFA) (i.e. `DFA(states, input_symbols, transitions, initial_state, final_states, allow_partial[optional]: bool`)

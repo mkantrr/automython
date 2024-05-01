@@ -640,10 +640,7 @@ def _get_dtm_transition_steps(target_fa, initial_state, final_states, input_str:
     
     current_states = transitions_taken.copy()
     for i, state in enumerate(current_states):
-        if (
-            state[0] == initial_state and state[0] in
-            final_states
-        ):
+        if (state[0] == initial_state and state[0] in final_states):
             current_states[i] = "→*" + state[0]
         elif state[0] == initial_state:
             current_states[i] = "→" + state[0]

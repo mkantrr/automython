@@ -139,7 +139,7 @@ dtm.save('dtm_wordcheck.png', '01')
 print(dtm.definition())
 print()
 
-print(dtm.test('0011'))
+print(dtm.test('011'))
 print()
 
 print(open("dtm.png"))
