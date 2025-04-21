@@ -2,7 +2,7 @@
 
 site_name: Automython
 site_description: The Automython interpreter is a simple programming language that interprets its source code to Python as its target code to help understand and visualize automata theory. 
-site_url: https://automython.matutu.dev
+site_url: https://os.mattkanter.com/automython
 repo_url: https://github.com/mkantrr/automython
 repo_name: automython
 edit_uri: blob/main/docs/
@@ -101,7 +101,7 @@ extra:
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/automython/
       name: Package on PyPI
-copyright: Copyright &copy; 2024 Matthew Kanter
+copyright: Copyright &copy; 2025 Matthew Kanter
 nav:
   - Introduction:
       - index.md
