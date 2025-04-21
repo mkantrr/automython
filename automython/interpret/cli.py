@@ -10,7 +10,7 @@ def cli():
     parser = fa_parse.Parser()
     visitor = fa_visitor.Visitor()
    
-    print('Automython 1.2.0 on ' + str(helpers.system_type())) 
+    print('Automython 1.2.1 on ' + str(helpers.system_type())) 
     print('Enter/Paste your content. Ctrl-D (i.e. EOF) to end input block.')
     while True:
         text = ''

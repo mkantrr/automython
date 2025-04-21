@@ -7,10 +7,10 @@ requires-python = ">=3.8"
 keywords = ['automata', "finite", 'compiler', 'interpreter', 'theory', 'computational theory', "non-deterministic", "turing", "machine", "state"]
 license = {file = 'LICENSE.txt'}
 authors = [
-    {name = 'Matthew Kanter', email = 'matt@matutu.dev'}
+    {name = 'Matthew Kanter', email = 'matthew@mattkanter.com'}
 ]
 maintainers = [
-    {name = 'Matthew Kanter', email = 'matt@matutu.dev'}
+    {name = 'Matthew Kanter', email = 'matthew@mattkanter.com'}
 ]
 dependencies = [
     "automata-lib[visual]>=8.2.0",

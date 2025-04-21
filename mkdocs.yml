@@ -7,7 +7,7 @@ repo_url: https://github.com/mkantrr/automython
 repo_name: automython
 edit_uri: blob/main/docs/
 authors:
-  - mkantrr: https://matutu.dev/
+  - mkantrr: https://mattkanter.com/
 theme:
   name: material
   palette:

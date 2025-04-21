@@ -15,7 +15,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/mkantrr/automython',
     author='Matthew Kanter',
-    author_email='matt@matutu.dev',
+    author_email='matthew@mattkanter.com',
     license='MIT',
     keywords=['automata', "finite", 'compiler', 'interpreter', 'theory', 'computational theory', "non-deterministic", "turing", "machine", "state"],
     classifiers=[
