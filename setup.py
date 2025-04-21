@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name='automython',
-    version='1.2.0',
+    version='1.2.1',
     description='A simplistic programming language interpreter to Python to help students grasp finite automata theory programmatically and with a computed graph through visualization libraries.',
     long_description=README,
     long_description_content_type='text/markdown',
